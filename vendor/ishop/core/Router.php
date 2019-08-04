@@ -22,7 +22,9 @@ class Router{
     public static function dispatch($url){
         $url = self::removeQueryString($url);
         if(self::matchRoute($url)){
-            $controller = 'app\controllers\\' . self::$route['prefix'] . self::$route['controller'] . 'Controller';
+            $slashes = empty( self::$route['prefix']) ? "" : "\\";
+
+            $controller = 'app\controllers\\' . self::$route['prefix'] .$slashes. self::$route['controller'] . 'Controller';
             if(class_exists($controller)){
                 $controllerObject = new $controller(self::$route);
                 $action = self::lowerCamelCase(self::$route['action']) . 'Action';
@@ -54,7 +56,7 @@ class Router{
                 if(!isset($route['prefix'])){
                     $route['prefix'] = '';
                 }else{
-                    $route['prefix'] .= '\\';
+                    $route['prefix'] .= '';
                 }
                 $route['controller'] = self::upperCamelCase($route['controller']);
                 self::$route = $route;
